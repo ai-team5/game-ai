@@ -3,7 +3,6 @@ import random
 from itertools import product
 from copy import deepcopy
 from math import sqrt, log
-import time
 
 class GameState:
     def __init__(self, board, selected_position, selected_piece, available_pieces):
