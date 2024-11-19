@@ -5,12 +5,20 @@ from copy import deepcopy
 from math import sqrt, log
 
 class GameState:
-    def __init__(self, board, selected_position, selected_piece, available_pieces):
-        self.board = board
-        self.selected_position = selected_position
-        self.selected_piece = selected_piece
-        self.available_pieces = available_pieces
+    def __init__(self, board, selected_position, selected_piece, next_available_pieces, player):
+        self.board :list[list] = board
+        self.selected_position :tuple = selected_position # location selected by me
+        self.selected_piece :tuple = selected_piece # opposite's piece
+        self.next_available_pieces :list[tuple] = next_available_pieces
+        self.player :int = player
 
+    def is_finished(self):
+        if self.check_wins():
+            return True
+        if self._is_full():
+            return True
+        return False
+    
     def check_wins(self):
         # Check rows, columns, and diagonals
         for col in range(BOARD_COLS):
@@ -50,7 +58,7 @@ class GameState:
                             return True
         return False
 
-    def is_full(self):
+    def _is_full(self):
         for row in range(BOARD_ROWS):
             for col in range(BOARD_COLS):
                 if self.board[row][col] == 0:
@@ -59,7 +67,7 @@ class GameState:
     
     def generate_next_states(self):
         states = []
-        for piece in self.available_pieces:
+        for piece in self.next_available_pieces:
             for row in range(4):
                 for col in range(4):
                     if self.board[row][col] == 0:
@@ -67,8 +75,9 @@ class GameState:
                         board[row][col] = self.selected_piece
                         selected_position = (row, col)
                         selected_piece = piece
-                        available_pieces = deepcopy(self.available_pieces).remove(piece)
-                        states.append(GameState(board, selected_position, selected_piece, available_pieces))
+                        available_pieces = deepcopy(self.next_available_pieces).remove(piece)
+                        player = 3 - self.player
+                        states.append(GameState(board, selected_position, selected_piece, available_pieces, player))
         return states
 
 class Node:
@@ -112,38 +121,41 @@ class Node:
         return children
 
     def is_terminal(self):
-        # if self.game_state.is_finished():
-        if self.game_state.check_wins():
-            return True
-        if self.game_state.is_full():
+        if self.game_state.is_finished():
             return True
         return False
     
     def get_result(self):
         if self.game_state.check_wins():
-            return 1
+            return {"reward" : 1, "player": self.game_state.player}
         else:
-            return 0.5
-        
-    def update(self, reward):
+            return {"reward" : 0.5, "player": self.game_state.player}
+            # self.sum_of_reward = 0.5
+            
+    def update(self, result):
+        if self.game_state.player == result["player"]:
+            reward = result["reward"] 
+        else:
+            reward = 1 - result["reward"]
         self.sum_of_reward += reward
         self.visit_num += 1
 
     def get_position(self):
-        return self.game_state.position
+        return self.game_state.selected_position
 
-def mcts():
-    game_state = GameState(board, None, selected_piece, available_pieces)
-    tree_root = Node(game_state, 0, None, 0)
+def mcts_for_selection():
+    pass
 
+def mcts_for_location(board, available_pieces, selected_piece):
+    game_state = GameState(board, None, selected_piece, available_pieces, 2)
+    tree_root = Node(game_state, None, None)
     for _ in range(SEARCH_ITER):
-        node = select()
+        node = select(tree_root)
         result = simulate(node)
         backpropagate(node, result) 
     return tree_root.get_max_uct_child()
 
-def select():
-    node = tree_root
+def select(node:Node):
     while not node.is_leaf():
         node = node.get_max_uct_child()
 
@@ -156,22 +168,22 @@ def select():
     node.expand()
     return node.get_max_uct_child() 
     
-def simulate(node:Node):
+def simulate(selected_node:Node):
+    node = selected_node
     while not node.is_terminal():
         children = node.generate_children()
         node = random.choice(children)
     return node.get_result()
 
-def backpropagate(selected_node:Node, result):
-    node = selected_node 
+def backpropagate(simulated_node:Node, result:dict):
+    node = simulated_node 
     while node != None:
         node.update(result)
         node = node.parent
-        result = 1 - result
 
 tree_root :Node = None
-SEARCH_ITER :int = 10
-CONSTANT :float = 1 / sqrt(2)
+SEARCH_ITER = 10
+CONSTANT = 1 / sqrt(2)
 BOARD_COLS = 4
 BOARD_ROWS = 4
 pieces = [(i, j, k, l) for i in range(2) for j in range(2) for k in range(2) for l in range(2)]  # All 16 pieces
@@ -187,16 +199,19 @@ class P1():
         선택할 말에 해당하는 값을 반환. 예:(0, 1, 0, 1)
         '''
         # Make your own algorithm here
-        
+
+        board = deepcopy(self.board)
+        available_pieces = deepcopy(self.available_pieces)
+        selected_node = mcts_for_selection(board, available_pieces)
 
         # time.sleep(0.5) # Check time consumption (Delete when you make your algorithm)
-
-        return random.choice(self.available_pieces)
+        return selected_node.get_selected_piece()
 
     def place_piece(self, selected_piece): # selected_piece: The selected piece that you have to place on the board (e.g. (1, 0, 1, 0)).
         '''
         말을 놓을 위치 (row, col)을 반환
         '''
-
-        selected_node = mcts()
+        board = deepcopy(self.board)
+        available_pieces = deepcopy(self.available_pieces)
+        selected_node = mcts_for_location(board, available_pieces, selected_piece)
         return selected_node.get_position()
