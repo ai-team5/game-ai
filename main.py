@@ -1,14 +1,24 @@
 import sys
 import pygame
 import numpy as np
-
-from machines_p1 import P1
-from machines_p2 import P2
 import time
+
+# from machines_p1 import P1
+# from machines_p2 import P2
+from minmax import MinimaxPlayer
+from gaminmax import GeneticMinimaxPlayer
+from ga import GeneticAlgorithm
+from slowGaMinmax import P1
+
+
+# players = {
+#     1: P1,
+#     2: P2
+# }
 
 players = {
     1: P1,
-    2: P2
+    2: MinimaxPlayer
 }
 
 pygame.init()
@@ -185,53 +195,6 @@ while True:
             pygame.quit()
             sys.exit()
 
-        if event.type == pygame.KEYDOWN and flag=="select_piece" and not game_over:
-            pressed = pygame.key.get_pressed()
-
-            if pressed[pygame.K_SPACE]:
-                while True:
-                    begin = time.time()
-                    player = players[3-turn](board=board, available_pieces=available_pieces)
-                    selected_piece = player.select_piece()
-                    finish = time.time()
-                    total_time_consumption[3-turn]+=(finish-begin)
-
-                    if selected_piece not in available_pieces:
-                        print(f"P{turn}; wrong selection")
-                    else:
-                        flag = "place_piece"
-                        break
-
-        elif event.type == pygame.KEYDOWN and flag=="place_piece" and not game_over:
-            pressed = pygame.key.get_pressed()
-
-            if pressed[pygame.K_SPACE]:
-                while True:
-                    begin = time.time()
-                    player = players[turn](board=board, available_pieces=available_pieces)
-                    (board_row, board_col) = player.place_piece()
-                    finish = time.time()
-                    total_time_consumption[turn]+=(finish-begin)
-
-                    if available_square(board_row, board_col):
-                        # Place the selected piece on the board
-                        board[board_row][board_col] = pieces.index(selected_piece) + 1
-                        available_pieces.remove(selected_piece)
-                        selected_piece = None
-
-                        if check_win():
-                            game_over = True
-                            winner = turn
-                        elif is_board_full():
-                            game_over = True
-                            winner = None
-                        else:
-                            turn = 3 - turn
-                            flag = "select_piece"
-                        break
-                    else:
-                        print(f"P{turn}; wrong placing")
-
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
                 restart_game()
@@ -239,23 +202,55 @@ while True:
                 turn = 1 
                 flag = "select_piece"
 
-        if not game_over:
-            draw_pieces()
-            draw_available_pieces()
-            if selected_piece:
-                display_message(f"P{turn} placing pieces")
-                display_time(total_time_consumption)
-            else:
-                display_message(f"P{3-turn} selecting pieces")
-                display_time(total_time_consumption)
-        else:
-            draw_pieces()
-            draw_available_pieces()
-            if winner:
-                display_message(f"Player {winner} Wins!", GREEN)
-                display_time(total_time_consumption)
-            elif is_board_full():
-                display_message("Draw!", GRAY)
-                display_time(total_time_consumption)
+    if not game_over:
+        if flag == "select_piece":
+            begin = time.time()
+            player = players[3-turn](board=board, available_pieces=available_pieces)
+            selected_piece = player.select_piece()
+            finish = time.time()
+            total_time_consumption[3-turn] += (finish-begin)
 
-        pygame.display.update()
+            if selected_piece in available_pieces:
+                flag = "place_piece"
+
+        elif flag == "place_piece":
+            begin = time.time()
+            player = players[turn](board=board, available_pieces=available_pieces)
+            (board_row, board_col) = player.place_piece()
+            finish = time.time()
+            total_time_consumption[turn] += (finish-begin)
+
+            if available_square(board_row, board_col):
+                board[board_row][board_col] = pieces.index(selected_piece) + 1
+                available_pieces.remove(selected_piece)
+                selected_piece = None
+
+                if check_win():
+                    game_over = True
+                    winner = turn
+                elif is_board_full():
+                    game_over = True
+                    winner = None
+                else:
+                    turn = 3 - turn
+                    flag = "select_piece"
+
+        draw_pieces()
+        draw_available_pieces()
+        if selected_piece:
+            display_message(f"P{turn} placing pieces")
+            display_time(total_time_consumption)
+        else:
+            display_message(f"P{3-turn} selecting pieces")
+            display_time(total_time_consumption)
+    else:
+        draw_pieces()
+        draw_available_pieces()
+        if winner:
+            display_message(f"Player {winner} Wins!", GREEN)
+            display_time(total_time_consumption)
+        elif is_board_full():
+            display_message("Draw!", GRAY)
+            display_time(total_time_consumption)
+
+    pygame.display.update()
