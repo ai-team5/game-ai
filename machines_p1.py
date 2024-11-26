@@ -10,7 +10,7 @@ class P1():
         self.board = board # Include piece indices. 0:empty / 1~16:piece
         self.available_pieces = available_pieces # Currently available pieces in a tuple type (e.g. (1, 0, 1, 0))
     
-    def select_piece(self):
+    def select_piece(self, selected_piece):
         # Make your own algorithm here
 
         # time.sleep(0.5) # Check time consumption (Delete when you make your algorithm)
