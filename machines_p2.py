@@ -17,7 +17,7 @@ class P2():
 
         return random.choice(self.available_pieces)
 
-    def place_piece(self):
+    def place_piece(self, selected_piece):
         # Available locations to place the piece
         available_locs = [(row, col) for row, col in product(range(4), range(4)) if self.board[row][col]==0]
 
