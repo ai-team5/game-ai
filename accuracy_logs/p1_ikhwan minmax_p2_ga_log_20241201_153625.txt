@@ -1,0 +1,66 @@
+date 2024-12-01 15:36:31.443860, game_count: 1
+p1_name: ikhwan minmax, p2_name: ga
+p1_total_time_consumption: 3.587679862976074, p2_total_time_consumption: 2.4933571815490723
+winner: 2
+board: [[ 7  2  3  9]
+ [ 5 16 14 10]
+ [13  1  6 11]
+ [ 4  0  0  8]]
+player_1_win_rate: 0.0
+player_2_win_rate: 1.0
+-----------------------------------
+date 2024-12-01 15:36:40.280785, game_count: 2
+p1_name: ikhwan minmax, p2_name: ga
+p1_total_time_consumption: 4.855661869049072, p2_total_time_consumption: 2.6872618198394775
+winner: 2
+board: [[ 1  7 16  6]
+ [ 2 10  4 15]
+ [ 3  8  5  9]
+ [13 11 14 12]]
+player_1_win_rate: 0.0
+player_2_win_rate: 1.0
+-----------------------------------
+date 2024-12-01 15:36:43.892809, game_count: 3
+p1_name: ikhwan minmax, p2_name: ga
+p1_total_time_consumption: 1.3423750400543213, p2_total_time_consumption: 1.0646390914916992
+winner: 1
+board: [[ 7  1  8 10]
+ [ 5 11 14  0]
+ [ 0  0  0  0]
+ [ 0  0  0  0]]
+player_1_win_rate: 0.3333333333333333
+player_2_win_rate: 0.6666666666666666
+-----------------------------------
+date 2024-12-01 15:36:54.988012, game_count: 4
+p1_name: ikhwan minmax, p2_name: ga
+p1_total_time_consumption: 7.011466979980469, p2_total_time_consumption: 2.8171145915985107
+winner: None
+board: [[ 2  7  1 14]
+ [ 3  9  4  5]
+ [12  6 15 10]
+ [13 11 16  8]]
+player_1_win_rate: 0.25
+player_2_win_rate: 0.5
+-----------------------------------
+date 2024-12-01 15:37:02.618989, game_count: 5
+p1_name: ikhwan minmax, p2_name: ga
+p1_total_time_consumption: 3.8529469966888428, p2_total_time_consumption: 2.5548856258392334
+winner: 1
+board: [[ 2 13  1  8]
+ [11  3  4 14]
+ [ 5  6  9  0]
+ [15  7  0  0]]
+player_1_win_rate: 0.4
+player_2_win_rate: 0.4
+-----------------------------------
+date 2024-12-01 15:37:10.263476, game_count: 6
+p1_name: ikhwan minmax, p2_name: ga
+p1_total_time_consumption: 4.46423602104187, p2_total_time_consumption: 1.9816656112670898
+winner: 1
+board: [[11  8 12 10]
+ [ 1  4  7 16]
+ [ 5  9  0  0]
+ [ 2  0  0  0]]
+player_1_win_rate: 0.5
+player_2_win_rate: 0.3333333333333333
+-----------------------------------

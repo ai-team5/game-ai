@@ -1,0 +1,11 @@
+date 2024-12-01 15:36:06.145605, game_count: 1
+p1_name: ikhwan minmax, p2_name: ga
+p1_total_time_consumption: 5.241269111633301, p2_total_time_consumption: 10.007093667984009
+winner: 1
+board: [[15  5  2  7]
+ [ 4 12  1 10]
+ [ 0 13  6  0]
+ [ 0  0 16  0]]
+player_1_win_rate: 1.0
+player_2_win_rate: 0.0
+-----------------------------------
