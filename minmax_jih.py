@@ -9,6 +9,8 @@ BOARD_ROWS = 4
 BOARD_COLS = 4
 MAX_WIN_SCORE = 100
 MIN_WIN_SCORE = -100
+PLUS_INF = 1e9
+MINUS_INF = -1e9
 DRAW_SCORE = 0
 
 pieces = [(i, j, k, l) for i in range(2) for j in range(2) for k in range(2) for l in range(2)]  # All 16 pieces
@@ -19,7 +21,7 @@ class P2():
         self.pieces = [(i, j, k, l) for i in range(2) for j in range(2) for k in range(2) for l in range(2)]  # All 16 pieces
         self.board = board # Include piece indices. 0:empty / 1~16:piece
         self.available_pieces = available_pieces # Currently available pieces in a tuple type (e.g. (1, 0, 1, 0))
-        self.name = "ikhwan minmax"
+        self.name = "ikhwan minmax p2"
         self.depth_limit = 1
         self.depth_limit_case_count = 0
 
@@ -27,6 +29,8 @@ class P2():
         '''
         선택할 말에 해당하는 값을 반환. 예:(0, 1, 0, 1)
         '''
+        global next_piece
+
         # Make your own algorithm here
         placed_piece_count = 0
         for row in range(4):
@@ -35,9 +39,13 @@ class P2():
                     placed_piece_count += 1
 
         if placed_piece_count <= PLACED_PIECE_NUM + 1:
-            return random.choice(self.available_pieces)
-        else:   
+            next_piece = random.choice(self.available_pieces)
+            print(f"debug : {self.name} select_piece() next_piece {next_piece}")
             return next_piece
+        
+        print(f"debug : {self.name} select_piece() next_piece {next_piece}")
+        return next_piece
+        
 
     def place_piece(self, selected_piece): # selected_piece: The selected piece that you have to place on the board (e.g. (1, 0, 1, 0)).
         '''
@@ -52,7 +60,8 @@ class P2():
                 if self.board[row][col] != 0:
                     placed_piece_count += 1
         
-        print(f"debug : place_piece (), placed_piece_count {placed_piece_count}")
+        print(f"debug : {self.name} place_piece(), placed_piece_count {placed_piece_count}, selected_piece {selected_piece}")
+
 
         if placed_piece_count <= PLACED_PIECE_NUM:
             # Available locations to place the piece
@@ -68,27 +77,32 @@ class P2():
         
         global next_piece
         board = np.array(deepcopy(self.board.tolist()))
+        
         available_pieces = deepcopy(self.available_pieces)
-    
-        available_pieces.remove(selected_piece)
-        assert len(available_pieces) != 0
+        # assert len(available_pieces) != 0
+        print(f"debug : {self.name} place_piece() available_pieces = {available_pieces}")
+        if available_pieces != []:
+            available_pieces.remove(selected_piece)
+
+        available_locs = [(row, col) for row in range(4) for col in range(4) if board[row][col] == 0]
+        
         best_score = -1e9
-        next_location = None 
-        for row in range(4):
-            for col in range(4):
-                for piece in available_pieces:
-                    if board[row][col] == 0:
-                        board[row][col] = pieces.index(selected_piece) + 1
-                        print(available_pieces)
-                        score = self.minmax(board, False, piece, self.depth_limit, available_pieces)                       
-                        if best_score < score:
-                            best_score = score
-                            next_location = (row, col)
-                            next_piece = piece
-                        board[row][col] = 0
+        next_location = random.choice(available_locs)
+        if available_pieces != []:
+            next_piece = random.choice(available_pieces)
+        for row, col in available_locs:
+            for piece in available_pieces:
+                board[row][col] = pieces.index(selected_piece) + 1
+                print(available_pieces)
+                score = self.minmax(board, False, piece, self.depth_limit, available_pieces)                       
+                if score > best_score:
+                    best_score = score
+                    next_location = (row, col)
+                    next_piece = piece
+                board[row][col] = 0
                         
         # print(f"debug : place_piece() :: board {self.board}")
-        print(f"debug : place_piece() :: next_location {next_location}, next_piece {next_piece}")
+        print(f"debug : {self.name} place_piece() :: next_location {next_location}, next_piece {next_piece}")
         
         return next_location
     
@@ -109,11 +123,11 @@ class P2():
         if depth == 0:
             # global depth_limit_case_count
             self.depth_limit_case_count += 1
-            print(f"debug: minmax :: p2 depth limit {self.depth_limit} case = {self.depth_limit_case_count}")
+            print(f"debug: {self.name} minmax() depth limit {self.depth_limit} case = {self.depth_limit_case_count}")
             return self.evaluate(board)
 
         if is_maximizing:
-            best_score = -1e9 
+            best_score = MINUS_INF 
             for row in range(4):
                 for col in range(4):
                     for piece in available_pieces:
@@ -127,7 +141,7 @@ class P2():
                             board[row][col] = 0  
             return best_score
         else:
-            best_score = 1e9 
+            best_score = PLUS_INF 
             for row in range(4):
                 for col in range(4):
                     for piece in available_pieces:
