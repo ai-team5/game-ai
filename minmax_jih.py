@@ -86,7 +86,7 @@ class P2():
 
         available_locs = [(row, col) for row in range(4) for col in range(4) if board[row][col] == 0]
         
-        best_score = -1e9
+        best_score = MINUS_INF
         next_location = random.choice(available_locs)
         if available_pieces != []:
             next_piece = random.choice(available_pieces)
