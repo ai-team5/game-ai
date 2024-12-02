@@ -4,14 +4,15 @@ import numpy as np
 import datetime
 
 # from machines_p1_mcts import P1
-from minmax_jih import P2
+from minmax_jih import MinMax as P1
+# from minmax_jih import MinMax as P2
 # from minmax import MinimaxPlayer
-from ga import GeneticAlgorithm
+from ga import GeneticAlgorithm as P2
 import time
 
 players = {
-    1: P2,
-    2: GeneticAlgorithm
+    1: P1,
+    2: P2
 }
 
 pygame.init()

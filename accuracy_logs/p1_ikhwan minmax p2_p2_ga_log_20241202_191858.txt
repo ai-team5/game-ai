@@ -1,0 +1,77 @@
+date 2024-12-02 19:19:06.858533, game_count: 1
+p1_name: ikhwan minmax p2, p2_name: ga
+p1_total_time_consumption: 4.442809104919434, p2_total_time_consumption: 3.6545498371124268
+winner: 1
+board: [[13  3  1  6]
+ [16 10  5 11]
+ [ 7 12 15  4]
+ [ 2  8 14  0]]
+player_1_win_rate: 1.0
+player_2_win_rate: 0.0
+-----------------------------------
+date 2024-12-02 19:19:14.229978, game_count: 2
+p1_name: ikhwan minmax p2, p2_name: ga
+p1_total_time_consumption: 2.9410033226013184, p2_total_time_consumption: 3.159001588821411
+winner: 1
+board: [[16 11  8  9]
+ [ 0  5  1  2]
+ [ 0 10  4  7]
+ [15 13 12  0]]
+player_1_win_rate: 1.0
+player_2_win_rate: 0.0
+-----------------------------------
+date 2024-12-02 19:19:22.744449, game_count: 3
+p1_name: ikhwan minmax p2, p2_name: ga
+p1_total_time_consumption: 5.120612144470215, p2_total_time_consumption: 2.1581192016601562
+winner: 1
+board: [[14  1  6  3]
+ [ 7 15 11  2]
+ [ 5  8  9  0]
+ [ 0  0  0  0]]
+player_1_win_rate: 1.0
+player_2_win_rate: 0.0
+-----------------------------------
+date 2024-12-02 19:19:34.556151, game_count: 4
+p1_name: ikhwan minmax p2, p2_name: ga
+p1_total_time_consumption: 7.24154257774353, p2_total_time_consumption: 3.3182802200317383
+winner: 2
+board: [[ 6  1 12 13]
+ [ 9 11  7 10]
+ [ 8  2 16  3]
+ [14  5  4 15]]
+player_1_win_rate: 0.75
+player_2_win_rate: 0.25
+-----------------------------------
+date 2024-12-02 19:19:39.244602, game_count: 5
+p1_name: ikhwan minmax p2, p2_name: ga
+p1_total_time_consumption: 2.226680040359497, p2_total_time_consumption: 1.2787632942199707
+winner: 1
+board: [[13  2 12  0]
+ [ 0  1  7  0]
+ [ 0  0 16  0]
+ [ 0  0 11  0]]
+player_1_win_rate: 0.8
+player_2_win_rate: 0.2
+-----------------------------------
+date 2024-12-02 19:19:48.482969, game_count: 6
+p1_name: ikhwan minmax p2, p2_name: ga
+p1_total_time_consumption: 5.45274019241333, p2_total_time_consumption: 2.5490775108337402
+winner: 1
+board: [[ 4  1 14 16]
+ [ 5  9  3  2]
+ [ 6 11  0  0]
+ [ 8  0  0  0]]
+player_1_win_rate: 0.8333333333333334
+player_2_win_rate: 0.16666666666666666
+-----------------------------------
+date 2024-12-02 19:19:54.586195, game_count: 7
+p1_name: ikhwan minmax p2, p2_name: ga
+p1_total_time_consumption: 2.378679037094116, p2_total_time_consumption: 2.501356363296509
+winner: 1
+board: [[14  2 16  7]
+ [ 3  1  4 13]
+ [ 0  5 11  0]
+ [ 0 10  0  0]]
+player_1_win_rate: 0.8571428571428571
+player_2_win_rate: 0.14285714285714285
+-----------------------------------
